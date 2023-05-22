@@ -11,7 +11,6 @@ import androidx.compose.material.OutlinedButton
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -20,27 +19,25 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import ru.macdroid.daypay.domain.MainEvents
 import ru.macdroid.daypay.domain.MainState
-import ru.macdroid.daypay.domain.model.SalaryByMonth
-import ru.macdroid.daypay.presentation.main.components.SelectableCalendar
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun MainRoot(
     onNavigateNext: () -> Unit,
     viewModel: MainViewModel = hiltViewModel(),
-
     ) {
 
-    val state by viewModel.state.collectAsState(initial = MainState())
-
-    LaunchedEffect(key1 = Unit, block = {
-        viewModel.onEvent(MainEvents.GetCalendar)
-    })
+    val state by viewModel.feature.state.collectAsState()
 
     MainScreen(
         state = state,
         onSalaryByMonth = {
-            viewModel.onEvent(MainEvents.GetMonthSalaryByMonth)
+            viewModel.onEvent(MainEvents.GetSalaryByMonth(
+                salary = state.salary,
+                workedDays = state.workedDays,
+                year = state.year,
+                month = state.month
+            ))
         },
         onSalaryInput = {
             viewModel.onEvent(MainEvents.SalaryInput(it))
@@ -52,22 +49,21 @@ fun MainRoot(
             viewModel.onEvent(MainEvents.MonthInput(it))
         },
         onWorkingDaysInput = {
-            viewModel.onEvent(MainEvents.WorkingDaysInput(it))
+            viewModel.onEvent(MainEvents.WorkedDaysInput(it))
         }
     )
 
 }
 
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun MainScreen(
     state: MainState,
     onSalaryByMonth: () -> Unit,
-    onSalaryInput: (Float) -> Unit,
-    onYearInput: (Int) -> Unit,
-    onMonthInput: (Int) -> Unit,
-    onWorkingDaysInput: (Int) -> Unit
+    onSalaryInput: (String) -> Unit,
+    onYearInput: (String) -> Unit,
+    onMonthInput: (String) -> Unit,
+    onWorkingDaysInput: (String) -> Unit
 ) {
 
     Column(
@@ -79,10 +75,11 @@ fun MainScreen(
             modifier = Modifier
                 .padding(bottom = 16.dp)
                 .fillMaxWidth(),
-            value = state.salary.toString(),
+            value = state.salary,
             onValueChange = {
-                if (it.isNotEmpty())
-                onSalaryInput(it.toFloat())
+                if (it.isNotEmpty()) {
+                    onSalaryInput(it)
+                }
             },
             label = { Text(text = "Ваш оклад") },
             keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number)
@@ -93,8 +90,9 @@ fun MainScreen(
                 .fillMaxWidth(),
             value = state.year.toString(),
             onValueChange = {
-                if (it.isNotEmpty())
-                onYearInput(it.toInt())
+                if (it.isNotEmpty()) {
+                    onYearInput(it)
+                }
             },
             label = { Text(text = "Год") },
             keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number)
@@ -106,7 +104,7 @@ fun MainScreen(
             value = state.month.toString(),
             onValueChange = {
                 if (it.isNotEmpty())
-                onMonthInput(it.toInt())
+                    onMonthInput(it)
             },
             label = { Text(text = "Месяц") },
             keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number)
@@ -115,10 +113,10 @@ fun MainScreen(
             modifier = Modifier
                 .padding(bottom = 16.dp)
                 .fillMaxWidth(),
-            value = state.workingDays.toString(),
+            value = state.workedDays,
             onValueChange = {
                 if (it.isNotEmpty())
-                onWorkingDaysInput(it.toInt())
+                    onWorkingDaysInput(it)
             },
             label = { Text(text = "Отработанных дней") },
             keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number)

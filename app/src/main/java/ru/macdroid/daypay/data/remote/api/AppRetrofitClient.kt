@@ -12,5 +12,5 @@ interface AppRetrofitClient {
     suspend fun getCalendar(): CalendarDTO
 
     @GET("$CALENDAR_ENDPOINT/{year}/{month}")
-    suspend fun getMonth(@Path("year") year: Int, @Path("month") month: Int): MonthDTO
+    suspend fun getMonth(@Path("year") year: String, @Path("month") month: String): MonthDTO
 }

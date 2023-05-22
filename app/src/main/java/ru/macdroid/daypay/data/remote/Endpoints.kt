@@ -11,7 +11,7 @@ const val YEAR = "/api/calendar/:year"
 const val HOLIDAYS = "/api/calendar/:year/holidays"
 // Возвращает праздничные и сокращенные предпраздничные дни для конкретного года.
 
-const val MONTH = "/api/calendar/:year/:month"
+const val MONTH = "/api/calendar/{year}/{month}"
 // Вернет объект месяца. Нумерация месяцев начинается с 1, а не с 0. Январь — месяц под номером 1, декабрь — под номером 12.
 //Объект содержит id месяца, имя, кол
 

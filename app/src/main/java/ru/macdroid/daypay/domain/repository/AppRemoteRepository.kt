@@ -6,5 +6,5 @@ import ru.macdroid.daypay.domain.model.Month
 
 interface AppRemoteRepository {
     suspend fun getClendar(): Calendar
-    suspend fun getMonth(year: Int, month: Int): Month
+    suspend fun getSalaryByWorkDays(year: String, month: String): Month
 }

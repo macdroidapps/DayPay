@@ -16,7 +16,7 @@ class AppRemoteRepositoryImpl @Inject constructor(
         return api.getCalendar().mapToCalendar()
     }
 
-    override suspend fun getMonth(year: Int, month: Int): Month {
+    override suspend fun getSalaryByWorkDays(year: String, month: String): Month {
         return api.getMonth(year, month).mapToMonth()
     }
 }
