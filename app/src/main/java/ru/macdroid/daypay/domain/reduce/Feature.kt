@@ -10,6 +10,7 @@ import kotlinx.coroutines.launch
 import ru.macdroid.daypay.domain.MainEffects
 import ru.macdroid.daypay.domain.MainEvents
 import ru.macdroid.daypay.domain.MainState
+import ru.macdroid.daypay.domain.reduce.reduce
 import javax.inject.Inject
 
 class Feature @Inject constructor() : IFeature<MainState, MainEvents, MainEffects> {
