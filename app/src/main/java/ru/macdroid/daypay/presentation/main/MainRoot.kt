@@ -144,7 +144,7 @@ fun MainScreen(
             )
             Text(
                 modifier = Modifier,
-                text = state.workingDaysInMonth.toString()
+                text = state.workingDaysInMonth
             )
         }
 
@@ -160,7 +160,7 @@ fun MainScreen(
             )
             Text(
                 modifier = Modifier,
-                text = state.salaryByMonth.toString()
+                text = if (state.salaryByMonth != "") String.format("%.1f", state.salaryByMonth?.toDouble() ?: "") else ""
             )
         }
 
@@ -176,7 +176,7 @@ fun MainScreen(
             )
             Text(
                 modifier = Modifier,
-                text = state.salaryByMonthWithoutNalog.toString()
+                text = if (state.salaryByMonthWithoutNalog != "") String.format("%.1f", state.salaryByMonthWithoutNalog?.toDouble() ?: "") else ""
             )
         }
 
